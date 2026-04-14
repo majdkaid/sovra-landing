@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sovra — ready to execute.</title>
+<meta property="og:title" content="sovra — ready to execute.">
+<meta property="og:description" content="We build the solutions that open the gate. Software. Automation. AI. Knowledge systems.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sovra.ch">
+<meta name="description" content="We build the solutions that open the gate. Software. Automation. AI. Knowledge systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --purple: #7C3AED; --purple-light: #A78BFA; --purple-deep: #6D28D9; --purple-glow: rgba(124,58,237,0.12); --purple-glow-strong: rgba(124,58,237,0.25); }
+  [data-theme="dark"] { --bg: #0A0A0F; --bg-surface: #12121A; --bg-card: #1A1A2E; --bg-nav: rgba(18,18,26,0.85); --text: #E4E4E7; --text-muted: #71717A; --text-heading: #FAFAFA; --border: rgba(255,255,255,0.06); --input-bg: #1A1A2E; --input-border: rgba(255,255,255,0.1); }
+  [data-theme="light"] { --bg: #FAFAFA; --bg-surface: #F4F4F5; --bg-card: #FFFFFF; --bg-nav: rgba(250,250,250,0.85); --text: #3F3F46; --text-muted: #71717A; --text-heading: #18181B; --border: rgba(0,0,0,0.06); --input-bg: #FFFFFF; --input-border: rgba(0,0,0,0.12); }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; transition: background 0.4s ease, color 0.4s ease; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--bg-nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 32px; height: 64px; display: flex; align-items: center; justify-content: space-between; transition: background 0.4s ease; }
+  .nav-logo { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.04em; color: var(--text-heading); text-decoration: none; transition: color 0.4s ease; }
+  .nav-logo .v { color: var(--purple); position: relative; display: inline-block; font-style: normal; }
+  .nav-logo .v span { display: inline-block; transform: scaleX(0.85); }
+  .nav-logo .v::after { content: ''; position: absolute; bottom: 0.06em; left: 8%; width: 84%; height: 1.5px; background: var(--purple); border-radius: 1px; }
+  .nav-controls { display: flex; align-items: center; gap: 16px; }
+  .lang-toggle { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.05em; display: flex; gap: 2px; background: var(--bg-surface); border-radius: 6px; padding: 2px; transition: background 0.4s ease; }
+  .lang-btn { padding: 5px 10px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; border-radius: 4px; font-family: inherit; font-size: inherit; letter-spacing: inherit; transition: all 0.2s ease; }
+  .lang-btn.active { background: var(--purple); color: #fff; }
+  .theme-toggle { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-surface); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.3s ease; }
+  .theme-toggle:hover { border-color: var(--purple); color: var(--purple); }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 24px 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -250px; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; background: radial-gradient(circle, var(--purple-glow-strong) 0%, transparent 60%); pointer-events: none; }
+  .logo-mark { font-family: 'Inter', sans-serif; font-size: clamp(72px, 14vw, 160px); font-weight: 800; letter-spacing: -0.04em; line-height: 1; color: var(--text-heading); margin-bottom: 16px; position: relative; transition: color 0.4s ease; }
+  .logo-mark .v { color: var(--purple); position: relative; display: inline-block; font-style: normal; }
+  .logo-mark .v span { display: inline-block; transform: scaleX(0.85); }
+  .logo-mark .v::after { content: ''; position: absolute; bottom: 0.08em; left: 8%; width: 84%; height: clamp(2px, 0.35vw, 3.5px); background: var(--purple); border-radius: 2px; }
+  .tagline { font-family: 'JetBrains Mono', monospace; font-size: clamp(14px, 2vw, 20px); letter-spacing: 0.08em; color: var(--purple-light); margin-bottom: 24px; }
+  .hero-desc { font-size: clamp(17px, 2.2vw, 22px); font-weight: 300; color: var(--text-muted); max-width: 560px; line-height: 1.7; }
+  .scroll-hint { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; animation: pulse 2.5s ease-in-out infinite; }
+  .scroll-hint .arrow { width: 1px; height: 28px; background: linear-gradient(to bottom, var(--purple), transparent); }
+  @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  /* SECTIONS */
+  section { padding: 120px 24px; max-width: 960px; margin: 0 auto; }
+  .divider { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  .divider hr { border: none; border-top: 1px solid var(--border); transition: border-color 0.4s ease; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--purple); margin-bottom: 20px; }
+  h2 { font-size: clamp(32px, 4.5vw, 52px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 20px; color: var(--text-heading); transition: color 0.4s ease; }
+  .gradient-text { background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  p.lead { font-size: 17px; color: var(--text-muted); max-width: 620px; font-weight: 300; line-height: 1.8; }
+
+  /* OFFERINGS */
+  .offerings { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 56px; border-radius: 12px; overflow: hidden; }
+  .offer-card { background: var(--bg-surface); padding: 40px; transition: background 0.4s ease; }
+  .offer-card:hover { background: var(--bg-card); }
+  .offer-icon { font-family: 'JetBrains Mono', monospace; font-size: 26px; color: var(--purple); margin-bottom: 16px; line-height: 1; }
+  .offer-card h3 { font-size: 19px; font-weight: 600; margin-bottom: 8px; color: var(--text-heading); transition: color 0.4s ease; }
+  .offer-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+  /* MARK */
+  .mark-explain { display: flex; align-items: center; gap: 64px; margin-top: 56px; flex-wrap: wrap; }
+  .mark-symbol { font-family: 'JetBrains Mono', monospace; font-size: 120px; font-weight: 600; color: var(--purple); line-height: 1; min-width: 150px; text-align: center; text-shadow: 0 0 80px var(--purple-glow-strong); }
+  .mark-breakdown { flex: 1; min-width: 280px; }
+  .mark-line { display: flex; align-items: flex-start; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border); transition: border-color 0.4s ease; }
+  .mark-line:last-child { border-bottom: none; }
+  .mark-line .sym { font-family: 'JetBrains Mono', monospace; font-size: 24px; color: var(--purple-light); min-width: 36px; line-height: 1.4; }
+  .mark-line h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--text-heading); transition: color 0.4s ease; }
+  .mark-line p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .mark-quote { margin-top: 48px; font-size: clamp(18px, 2.5vw, 24px); font-weight: 300; color: var(--text); line-height: 1.8; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto; padding: 40px 0; border-top: 1px solid var(--border); transition: color 0.4s ease, border-color 0.4s ease; }
+  .mark-quote .hl { color: var(--purple-light); font-weight: 500; }
+
+  /* COLOR */
+  .color-row { display: flex; gap: 2px; border-radius: 12px; overflow: hidden; margin-top: 40px; }
+  .swatch { flex: 1; padding: 28px 12px; text-align: center; min-height: 100px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .swatch .hex { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.04em; opacity: 0.8; }
+  .swatch .name { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; margin-top: 4px; }
+  .color-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+  .color-fact { display: flex; gap: 12px; align-items: flex-start; }
+  .color-fact .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--purple); margin-top: 8px; flex-shrink: 0; }
+  .color-fact p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .color-fact strong { color: var(--text-heading); transition: color 0.4s ease; }
+
+  /* MAP */
+  .map-container { margin-top: 40px; border-radius: 12px; overflow: hidden; position: relative; height: 380px; border: 1px solid var(--border); transition: border-color 0.4s ease; }
+  .map-container iframe { width: 100%; height: 100%; border: none; }
+  [data-theme="dark"] .map-container iframe { filter: brightness(0.6) contrast(1.2) saturate(0) hue-rotate(180deg) invert(1); }
+  [data-theme="light"] .map-container iframe { filter: none; }
+  .map-address { margin-top: 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--text); letter-spacing: 0.02em; transition: color 0.4s ease; }
+  .map-sub { font-size: 15px; color: var(--text-muted); margin-top: 6px; }
+
+  /* CONTACT */
+  .contact-form { margin-top: 48px; max-width: 520px; }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .form-group input, .form-group textarea { width: 100%; padding: 14px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; outline: none; transition: all 0.3s ease; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 3px var(--purple-glow); }
+  .form-group textarea { height: 140px; resize: vertical; }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-muted); opacity: 0.6; }
+  .btn-send { background: var(--purple); color: #fff; border: none; padding: 14px 40px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; }
+  .btn-send:hover { background: var(--purple-deep); transform: translateY(-1px); box-shadow: 0 4px 20px var(--purple-glow-strong); }
+  .contact-email { margin-top: 24px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--text-muted); letter-spacing: 0.03em; }
+  .contact-email a { color: var(--purple-light); text-decoration: none; }
+
+  /* FOOTER */
+  footer { text-align: center; padding: 48px 24px; border-top: 1px solid var(--border); transition: border-color 0.4s ease; }
+  .footer-logo { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: -0.04em; color: var(--text-heading); margin-bottom: 6px; transition: color 0.4s ease; }
+  .footer-logo .v { color: var(--purple); position: relative; display: inline-block; font-style: normal; }
+  .footer-logo .v span { display: inline-block; transform: scaleX(0.85); }
+  .footer-logo .v::after { content: ''; position: absolute; bottom: 0.06em; left: 8%; width: 84%; height: 1.5px; background: var(--purple); border-radius: 1px; }
+  .footer-tagline { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--purple-light); letter-spacing: 0.08em; margin-bottom: 16px; }
+  .footer-meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.04em; }
+
+  /* ANIMATIONS */
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* LANGUAGE */
+  [data-lang-de] { display: none; }
+  [lang="de"] [data-lang-de] { display: unset; }
+  [lang="de"] [data-lang-en] { display: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 0 16px; }
+    section { padding: 80px 20px; }
+    .offerings { grid-template-columns: 1fr; }
+    .mark-explain { flex-direction: column; gap: 32px; }
+    .mark-symbol { font-size: 80px; }
+    .color-facts { grid-template-columns: 1fr; }
+    .color-row { flex-wrap: wrap; }
+    .swatch { min-width: calc(33% - 2px); }
+    .map-container { height: 280px; }
+  }
+  @media (max-width: 480px) {
+    .nav-logo { font-size: 18px; }
+    .lang-toggle { font-size: 11px; }
+    .offer-card { padding: 28px 20px; }
+    .swatch { min-width: calc(50% - 2px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">so<span class="v"><span>&gt;</span></span>ra</a>
+  <div class="nav-controls">
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="de" onclick="setLang('de')">DE</button>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span class="theme-icon">&#9790;</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="logo-mark">so<span class="v"><span>&gt;</span></span>ra</div>
+  <div class="tagline">ready to execute.</div>
+  <p class="hero-desc">
+    <span data-lang-en>We build the solutions that open the gate.</span>
+    <span data-lang-de>Wir bauen die Lösungen, die das Tor öffnen.</span>
+  </p>
+  <div class="scroll-hint">
+    <span><span data-lang-en>discover</span><span data-lang-de>entdecken</span></span>
+    <div class="arrow"></div>
+  </div>
+</div>
+
+<div class="divider"><hr></div>
+
+<!-- WHAT WE DO -->
+<section class="fade-in">
+  <div class="section-label">// <span data-lang-en>What we build</span><span data-lang-de>Was wir bauen</span></div>
+  <h2>
+    <span data-lang-en>Your problem.</span><span data-lang-de>Ihr Problem.</span><br>
+    <span class="gradient-text"><span data-lang-en>Our execution.</span><span data-lang-de>Unsere Umsetzung.</span></span>
+  </h2>
+  <p class="lead">
+    <span data-lang-en>Sovra is a solutions agency. We find broken systems and build the thing that fixes them.</span>
+    <span data-lang-de>Sovra ist eine Lösungsagentur. Wir finden kaputte Systeme und bauen die Lösung, die sie repariert.</span>
+  </p>
+
+  <div class="offerings">
+    <div class="offer-card">
+      <div class="offer-icon">{ }</div>
+      <h3>Software</h3>
+      <p>
+        <span data-lang-en>Full products from concept to launch. Web, mobile, backend. Modern stacks, clean architecture, shipped fast.</span>
+        <span data-lang-de>Komplette Produkte von der Idee bis zum Launch. Web, Mobile, Backend. Moderne Stacks, saubere Architektur, schnell geliefert.</span>
+      </p>
+    </div>
+    <div class="offer-card">
+      <div class="offer-icon">&gt;_</div>
+      <h3><span data-lang-en>Automation</span><span data-lang-de>Automatisierung</span></h3>
+      <p>
+        <span data-lang-en>Manual processes turned into systems. Workflows, integrations, pipelines. Set once, runs forever.</span>
+        <span data-lang-de>Manuelle Prozesse werden zu Systemen. Workflows, Integrationen, Pipelines. Einmal einrichten, läuft für immer.</span>
+      </p>
+    </div>
+    <div class="offer-card">
+      <div class="offer-icon">AI</div>
+      <h3><span data-lang-en>Artificial Intelligence</span><span data-lang-de>Künstliche Intelligenz</span></h3>
+      <p>
+        <span data-lang-en>AI-powered features embedded into real products. Not demos. Not concepts. Production-grade intelligence.</span>
+        <span data-lang-de>KI-gestützte Funktionen in echte Produkte integriert. Keine Demos. Keine Konzepte. Produktionsreife Intelligenz.</span>
+      </p>
+    </div>
+    <div class="offer-card">
+      <div class="offer-icon">[ ]</div>
+      <h3><span data-lang-en>Knowledge Systems</span><span data-lang-de>Wissenssysteme</span></h3>
+      <p>
+        <span data-lang-en>LLM-compiled knowledge bases. Your organization's brain — structured, searchable, and always current.</span>
+        <span data-lang-de>LLM-kompilierte Wissensdatenbanken. Das Gehirn Ihrer Organisation — strukturiert, durchsuchbar, immer aktuell.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- THE MARK -->
+<section class="fade-in">
+  <div class="section-label">// <span data-lang-en>The Mark</span><span data-lang-de>Das Zeichen</span></div>
+  <h2><span data-lang-en>The V is a</span><span data-lang-de>Das V ist ein</span> <span class="gradient-text">&ge;</span></h2>
+  <p class="lead">
+    <span data-lang-en>It's not decoration. Every line in the logo carries meaning.</span>
+    <span data-lang-de>Keine Dekoration. Jede Linie im Logo hat eine Bedeutung.</span>
+  </p>
+
+  <div class="mark-explain">
+    <div class="mark-symbol">&ge;</div>
+    <div class="mark-breakdown">
+      <div class="mark-line">
+        <div class="sym">&gt;</div>
+        <div>
+          <h4><span data-lang-en>The terminal prompt</span><span data-lang-de>Der Terminal-Prompt</span></h4>
+          <p><span data-lang-en>Ready to execute. Technology is our lever. AI is our tool. We don't theorize — we ship.</span><span data-lang-de>Bereit zur Ausführung. Technologie ist unser Hebel. KI ist unser Werkzeug. Wir theoretisieren nicht — wir liefern.</span></p>
+        </div>
+      </div>
+      <div class="mark-line">
+        <div class="sym">=</div>
+        <div>
+          <h4><span data-lang-en>The level playing field</span><span data-lang-de>Das ebene Spielfeld</span></h4>
+          <p><span data-lang-en>Equality. Fairness. Access. The thing we're building toward with every product we launch.</span><span data-lang-de>Gleichheit. Fairness. Zugang. Das Ziel, auf das wir mit jedem Produkt hinarbeiten.</span></p>
+        </div>
+      </div>
+      <div class="mark-line">
+        <div class="sym">&ge;</div>
+        <div>
+          <h4><span data-lang-en>Greater than or equal</span><span data-lang-de>Grösser oder gleich</span></h4>
+          <p><span data-lang-en>Technology achieving equality. That's Sovra.</span><span data-lang-de>Technologie, die Gleichheit schafft. Das ist Sovra.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mark-quote">
+    "<span data-lang-en>The V in Sovra is a &ge; — greater than or equal. The chevron is a terminal prompt: </span><span data-lang-de>Das V in Sovra ist ein &ge; — grösser oder gleich. Der Chevron ist ein Terminal-Prompt: </span><span class="hl"><span data-lang-en>technology ready to execute.</span><span data-lang-de>Technologie, bereit zur Ausführung.</span></span>
+    <span data-lang-en> The bar beneath it is the equals sign: </span><span data-lang-de> Der Strich darunter ist das Gleichheitszeichen: </span><span class="hl"><span data-lang-en>the level playing field we're building.</span><span data-lang-de>das ebene Spielfeld, das wir bauen.</span></span>"
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- COLOR -->
+<section class="fade-in">
+  <div class="section-label">// <span data-lang-en>The Color</span><span data-lang-de>Die Farbe</span></div>
+  <h2><span data-lang-en>Obsidian</span><span data-lang-de>Obsidian</span> <span class="gradient-text"><span data-lang-en>purple.</span><span data-lang-de>Violett.</span></span></h2>
+  <p class="lead">
+    <span data-lang-en>Not a random pick. Every layer has meaning.</span>
+    <span data-lang-de>Keine zufällige Wahl. Jede Ebene hat Bedeutung.</span>
+  </p>
+
+  <div class="color-row">
+    <div class="swatch" style="background:#6D28D9;color:#fff;"><div class="hex">#6D28D9</div><div class="name">Deep</div></div>
+    <div class="swatch" style="background:#7C3AED;color:#fff;"><div class="hex">#7C3AED</div><div class="name">Primary</div></div>
+    <div class="swatch" style="background:#A78BFA;color:#0A0A0F;"><div class="hex">#A78BFA</div><div class="name">Light</div></div>
+    <div class="swatch" style="background:#0A0A0F;color:#71717A;border:1px solid rgba(255,255,255,0.1);"><div class="hex">#0A0A0F</div><div class="name">Dark</div></div>
+    <div class="swatch" style="background:#FAFAFA;color:#18181B;"><div class="hex">#FAFAFA</div><div class="name">Light</div></div>
+  </div>
+
+  <div class="color-facts">
+    <div class="color-fact"><div class="dot"></div><p><strong><span data-lang-en>The mineral.</span><span data-lang-de>Das Mineral.</span></strong> <span data-lang-en>Obsidian is volcanic glass — the sharpest natural material on Earth. It cuts through complexity.</span><span data-lang-de>Obsidian ist vulkanisches Glas — das schärfste natürliche Material der Erde. Es schneidet durch Komplexität.</span></p></div>
+    <div class="color-fact"><div class="dot"></div><p><strong><span data-lang-en>The rarity.</span><span data-lang-de>Die Seltenheit.</span></strong> <span data-lang-en>Purple was the most expensive dye in human history. Only royalty could wear it. In tech, nobody uses it.</span><span data-lang-de>Violett war der teuerste Farbstoff der Geschichte. Nur Könige durften ihn tragen. In der Tech-Welt nutzt ihn niemand.</span></p></div>
+    <div class="color-fact"><div class="dot"></div><p><strong><span data-lang-en>The energy.</span><span data-lang-de>Die Energie.</span></strong> <span data-lang-en>Violet has the highest frequency of visible light. The most energetic color you can see.</span><span data-lang-de>Violett hat die höchste Frequenz des sichtbaren Lichts. Die energiereichste Farbe, die man sehen kann.</span></p></div>
+    <div class="color-fact"><div class="dot"></div><p><strong><span data-lang-en>The hidden depth.</span><span data-lang-de>Die verborgene Tiefe.</span></strong> <span data-lang-en>Looks black until the light hits it — then the purple sheen appears. Like the &ge; that looks like a V.</span><span data-lang-de>Sieht schwarz aus, bis das Licht darauf fällt — dann erscheint der violette Schimmer. Wie das &ge;, das wie ein V aussieht.</span></p></div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- SWISS ROOTS -->
+<section class="fade-in">
+  <div class="section-label">// <span data-lang-en>Where we are</span><span data-lang-de>Wo wir sind</span></div>
+  <h2>Cham, <span class="gradient-text"><span data-lang-en>Switzerland.</span><span data-lang-de>Schweiz.</span></span></h2>
+
+  <div class="map-container">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5428.8!2d8.4614!3d47.1823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479aa7a8c0a1a7b1%3A0x400ff88479e5220!2s6330+Cham%2C+Switzerland!5e0!3m2!1sen!2sch!4v1"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="map-address">Sinserstrasse 65, 6330 Cham</div>
+  <div class="map-sub">
+    <span data-lang-en>Swiss precision. Global reach.</span>
+    <span data-lang-de>Schweizer Präzision. Globale Reichweite.</span>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- CONTACT -->
+<section class="fade-in">
+  <div class="section-label">// <span data-lang-en>Let's talk</span><span data-lang-de>Kontakt</span></div>
+  <h2><span data-lang-en>Ready to</span><span data-lang-de>Bereit zur</span> <span class="gradient-text"><span data-lang-en>execute?</span><span data-lang-de>Umsetzung?</span></span></h2>
+
+  <form class="contact-form" action="https://formspree.io/f/placeholder" method="POST">
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" name="name" required>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label><span data-lang-en>Message</span><span data-lang-de>Nachricht</span></label>
+      <textarea name="message" required></textarea>
+    </div>
+    <button type="submit" class="btn-send"><span data-lang-en>Send</span><span data-lang-de>Senden</span></button>
+  </form>
+
+  <div class="contact-email"><a href="mailto:hello@sovra.ch">hello@sovra.ch</a></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">so<span class="v"><span>&gt;</span></span>ra</div>
+  <div class="footer-tagline">ready to execute.</div>
+  <div class="footer-meta">sovra.ch · Cham, Schweiz · 2026</div>
+</footer>
+
+<script>
+  // Scroll fade-in
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+
+  // Theme toggle
+  function toggleTheme() {
+    var html = document.documentElement;
+    var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-icon').textContent = next === 'dark' ? '\u263E' : '\u2606';
+    localStorage.setItem('sovra-theme', next);
+  }
+  // Restore saved theme
+  var savedTheme = localStorage.getItem('sovra-theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.querySelector('.theme-icon').textContent = savedTheme === 'dark' ? '\u263E' : '\u2606';
+  }
+
+  // Language toggle (CSS-driven via lang attribute)
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    localStorage.setItem('sovra-lang', lang);
+  }
+  // Restore saved language
+  var savedLang = localStorage.getItem('sovra-lang');
+  if (savedLang) setLang(savedLang);
+</script>
+</body>
+</html>
