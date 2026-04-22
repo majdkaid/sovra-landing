@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny-ps" viewBox="0 0 1024 1024">
+  <title>Sovra</title>
+  <rect width="1024" height="1024" fill="#08080D"/>
+  <g stroke="#A78BFA" stroke-width="112" stroke-linecap="square" stroke-linejoin="miter" fill="none">
+    <polyline points="360,248 664,512 360,776"/>
+    <line x1="360" y1="892" x2="664" y2="892"/>
+  </g>
+</svg>
